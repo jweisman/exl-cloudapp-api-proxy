@@ -69,7 +69,7 @@ const verify = auth => {
   /* Verify issuer */
   const issuer = verified.iss.replace(/:!~/, ':').toLowerCase();
   const validIssuer = allowedApps 
-    ? allowedApps.toLowerCase().split(',').map(v=>`${JWT_ISS_PREFIX}:${v}`).includes(issuer) 
+    ? allowedApps.toLowerCase().split(',').map(v=>`${JWT_ISS_PREFIX}:${v.trim()}`).includes(issuer) 
     : issuer.startsWith(JWT_ISS_PREFIX);
   if (!validIssuer) {
     throw new Error('Invalid issuer.');
