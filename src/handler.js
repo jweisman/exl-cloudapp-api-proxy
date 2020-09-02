@@ -3,7 +3,7 @@ const utils = require('./utils');
 const { auth } = require('./authorizer/index');
 const fetch = require('node-fetch');
 const AWS = require('aws-sdk');
-const sm = new AWS.SecretsManager({region: 'us-east-1'});
+const sm = new AWS.SecretsManager();
 const secretName = process.env.API_KEYS_SECRET_NAME || 'ExlApiProxy/ApiKeys';
 const forInstCode = (process.env.FOR_INSTCODE_HEADER_NAME || 'X-For-InstCode').toLowerCase();
 
