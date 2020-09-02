@@ -1,8 +1,8 @@
 {
   "name": "exl-api-proxy",
   "scripts": {
-    "package": "aws cloudformation package --template ./cloudformation.yaml --s3-bucket $npm_config_s3_bucket_name --output-template packaged-cloudformation.yaml --region $npm_config_region --s3-prefix sam",
-    "deploy": "npm run package && aws cloudformation deploy --template-file packaged-cloudformation.yaml --stack-name $npm_config_cloud_formation_stack_name --capabilities CAPABILITY_IAM --region $npm_config_region --parameter-overrides AllowedApps=$npm_config_allowed_apps AllowedInstCodes=$npm_config_allowed_inst_codes && npm run describe-stack",
+    "package": "aws cloudformation package --template ./cloudformation.yaml --s3-bucket $npm_config_s3_bucket_name --output-template cloudformation.packaged.yaml --region $npm_config_region --s3-prefix sam",
+    "deploy": "npm run package && aws cloudformation deploy --template-file cloudformation.packaged.yaml --stack-name $npm_config_cloud_formation_stack_name --capabilities CAPABILITY_IAM --region $npm_config_region --parameter-overrides AllowedApps=$npm_config_allowed_apps AllowedInstCodes=$npm_config_allowed_inst_codes && npm run describe-stack",
     "delete-stack": "aws cloudformation delete-stack --stack-name $npm_config_cloud_formation_stack_name --region $npm_config_region",
     "describe-stack": "aws cloudformation describe-stacks --stack-name $npm_config_cloud_formation_stack_name --region $npm_config_region --query 'Stacks[0].Outputs[*].{Key:OutputKey,Value:OutputValue,Description:Description}' --output table"
   }

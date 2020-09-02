@@ -27,10 +27,13 @@ Then run the following:
 $ npm run deploy
 ```
 
-The output will include the URL of the proxy and the command to add the API keys to the secret.
+The output will include the URL of the proxy and the identifier of the API keys secret. You can update the secret by creating a JSON file with the institution codes and API keys as name/value pairs, and then running the command listed in the output, for example:
+```
+aws secretsmanager put-secret-value --secret-id arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:ExlApiProxy/ApiKeysSecret-XXXX --secret-string file://apikeys.json
+```
 
 ## Configuration
-The following optional environment variables are supported:
-* `CLOUDAPP_AUTHORIZER_ALLOWED_APPS`: Comma separated list of allowed Cloud App IDs (Github username/repository name, i.e. ExLibrisGroup/alma-hathitrust-availability)
-* `CLOUDAPP_AUTHORIZER_ALLOWED_INST_CODES`: Comma separated list of allowed institution codes (i.e. 01MYUNI_INST)
+The following optional environment variables are supported in the Lambda function. They can also be set in the `.npmrc` file as described above.
+* `CLOUDAPP_AUTHORIZER_ALLOWED_APPS`: Comma separated list of allowed Cloud App IDs (Github username/repository name, e.g. ExLibrisGroup/alma-hathitrust-availability)
+* `CLOUDAPP_AUTHORIZER_ALLOWED_INST_CODES`: Comma separated list of allowed institution codes (e.g. 01MYUNI_INST1, 01MYUNI_INST2)
 * `API_KEYS_SECRET_NAME`: The name of the [Secret Manager](https://aws.amazon.com/secrets-manager/) secret which stores API keys in name/value pairs

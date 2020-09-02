@@ -1,5 +1,6 @@
 .env
 .test/
 node_modules/
-packaged-*.yaml
+*.packaged.yaml
 .npmrc
+apikeys.json
