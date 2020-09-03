@@ -32,6 +32,8 @@ The output will include the URL of the proxy and the identifier of the API keys 
 aws secretsmanager put-secret-value --secret-id arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:ExlApiProxy/ApiKeysSecret-XXXX --secret-string file://apikeys.json
 ```
 
+The Angular component in [this Gist](https://gist.github.com/jweisman/7cb7b298a191206dfa985cd7f9fb5df6) can be added to a Cloud App and used to test the proxy. Don't forget to add the proxy URL to the [`contentSecurity` section of the manifest](https://developers.exlibrisgroup.com/cloudapps/docs/manifest/).
+
 ## Configuration
 The following optional environment variables are supported in the Lambda function. They can also be set in the `.npmrc` file as described above.
 * `CLOUDAPP_AUTHORIZER_ALLOWED_APPS`: Comma separated list of allowed Cloud App IDs (Github username/repository name, e.g. ExLibrisGroup/alma-hathitrust-availability)
