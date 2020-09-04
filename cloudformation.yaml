@@ -114,6 +114,6 @@
           - !Ref AWS::Region
           - ".amazonaws.com/"
     ApiKeySecret:
-      Description: "API Key secret. Update with the command: aws secretsmanager put-secret-value --secret-id <<ARN>> --secret-string file://apikeys.json"
+      Description: "API Key secret. Update with the command: npm run update-keys --file=apikeys.json"
       Value: !Ref ApiKeysSecret
   

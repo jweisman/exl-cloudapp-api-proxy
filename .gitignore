@@ -3,4 +3,3 @@
 node_modules/
 *.packaged.yaml
 .npmrc
-apikeys.json

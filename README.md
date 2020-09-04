@@ -13,7 +13,17 @@ This Lambda function provides an API proxy for use by Ex Libris Cloud Apps to ac
 * Proxy of API request and response to Alma
 
 ## Deployment to AWS
-To deploy to AWS, create a `.npmrc` file with the following content:
+To deploy to AWS, follow the steps below:
+
+1. Clone repository
+```
+$ git clone https://github.com/jweisman/exl-cloudapp-api-proxy
+```
+2. Install dependencies
+```
+$ cd exl-cloudapp-api-proxy/dependencies/nodejs/ && npm install && cd ../../
+```
+3. Create a `.npmrc` file with the following content:
 ```
 s3_bucket_name = BUCKET_NAME # Name of bucket in your AWS account to upload the assets to
 region = eu-central-1 # Region to deploy to
@@ -21,15 +31,14 @@ cloud_formation_stack_name = ExlApiProxy # Stack name
 allowed_apps =  # Optional list of allowed apps
 allowed_inst_codes =  # Optional list of allowed institution codes
 ```
-
-Then run the following:
+4. Run the following to deploy the CloudFormation template. The output will include the URL of the proxy and the identifier of the API keys secret. 
 ```
 $ npm run deploy
 ```
-
-The output will include the URL of the proxy and the identifier of the API keys secret. You can update the secret by creating a JSON file with the institution codes and API keys as name/value pairs, and then running the command listed in the output, for example:
+5. Update the secret by creating a JSON file with the institution codes and API keys as name/value pairs, and then running the following command, for example:
 ```
-aws secretsmanager put-secret-value --secret-id arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:ExlApiProxy/ApiKeysSecret-XXXX --secret-string file://apikeys.json
+$ echo '{"01_MYINST":"l7xx......"}' > apikeys.json
+$ npm run update-keys --file=apikeys.json
 ```
 
 The Angular component in [this Gist](https://gist.github.com/jweisman/7cb7b298a191206dfa985cd7f9fb5df6) can be added to a Cloud App and used to test the proxy. Don't forget to add the proxy URL to the [`contentSecurity` section of the manifest](https://developers.exlibrisgroup.com/cloudapps/docs/manifest/).
