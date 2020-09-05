@@ -13,7 +13,7 @@ This Lambda function provides an API proxy for use by Ex Libris Cloud Apps to ac
 * Proxy of API request and response to Alma
 
 ## Deployment to AWS
-To deploy to AWS, follow the steps below:
+To deploy to AWS, follow the steps below. (These instructions assume you have an [AWS account](https://aws.amazon.com/), and that the [AWS CLI is installed](https://aws.amazon.com/cli/) and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
 
 1. Clone repository
 ```
