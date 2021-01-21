@@ -68,7 +68,7 @@ const verify = auth => {
   const verified = jwt.verify(tokenValue, publicKey, {ignoreExpiration, algorithm});
 
   /* Verify issuer */
-  const issuer = verified.iss.replace(allowLocalhost ? /:!~/ : /:/, ':').toLowerCase();
+  const issuer = (verified.aud || verified.iss).replace(allowLocalhost ? /:!~/ : /:/, ':').toLowerCase();
   const validIssuer = allowedApps 
     ? allowedApps.toLowerCase().split(',').map(v=>`${JWT_ISS_PREFIX}:${v.trim()}`).includes(issuer) 
     : issuer.startsWith(JWT_ISS_PREFIX);
