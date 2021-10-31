@@ -11,6 +11,8 @@ const regionMap = {
   us: 'na',
 }
 
+let _keys;
+
 const handler = async (event, context) => {
   let result;
   if (event.requestContext && event.requestContext.http.method == 'OPTIONS') {
@@ -23,7 +25,16 @@ const handler = async (event, context) => {
     result = utils.responses.unauthorized();
     return utils.cors(result, event);
   }
+  const keys = await getKeys();
 
+  /* Support management API */
+  if (event.rawPath.startsWith('/.manage')) {
+    switch (event.rawPath) {
+      case '/.manage/inst-codes':
+        result = utils.responses.success(Object.keys(keys));
+        return utils.cors(result, event);
+    }
+  }
   const region = (process.env.AWS_REGION && process.env.AWS_REGION.slice(0,2)) || 'us';
   const host = `api-${regionMap[region] || region}.hosted.exlibrisgroup.com`;
   let customRequestHeader;
@@ -31,12 +42,9 @@ const handler = async (event, context) => {
     if ( event.headers ) {
       customRequestHeader = event.headers;
     }
-    if (event.headers[forInstCode]) {
-      const keys = await sm.getSecretValue({SecretId: secretName}).promise();
-      if (keys) {
-        const key = JSON.parse(keys.SecretString)[event.headers[forInstCode]];
-        customRequestHeader['authorization'] = `apikey ${key}`;
-      }
+    if (event.headers[forInstCode] && keys) {
+      const key = keys[event.headers[forInstCode]];
+      customRequestHeader['authorization'] = `apikey ${key}`;
     }
     customRequestHeader['host'] = host;
     const params = {
@@ -65,5 +73,12 @@ const handler = async (event, context) => {
   return utils.cors(result, event);
 };
 
+const getKeys = async () => {
+  if (!_keys) {
+    const resp = await sm.getSecretValue({SecretId: secretName}).promise();
+    _keys = JSON.parse(resp.SecretString)
+  }
+  return _keys;
+}
 
 module.exports = { handler };
