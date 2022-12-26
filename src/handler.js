@@ -52,7 +52,8 @@ const handler = async (event, context) => {
       headers: customRequestHeader,
       body: event.body
     };
-    const url = `https://${host}${event.rawPath}?${event.rawQueryString}`;
+    var path = encodeURIComponent(event.rawPath).replace(/%2F/g,'/');
+    const url = `https://${host}${path}?${event.rawQueryString}`;
     const response = await fetch(url, params);
     const textResponse = await response.text();
     let responseHeaders = {};
